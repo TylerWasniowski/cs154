@@ -32,7 +32,7 @@ public class DoubleA extends Automata {
             return;
         }
 
-        if (in.matches("[^ab]")) {
+        if (in.matches(".*[^ab].*")) {
             System.out.println("Only expected a or b.");
             return;
         }
