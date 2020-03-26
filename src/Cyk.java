@@ -115,21 +115,15 @@ public class Cyk {
                 for (int i = 0; i <= input.length() - l; i++) {
                     // Line 8.
                     int j = i + l - 1;
-                    // Line 9 (Modified to allow k to be equal to j to handle unit productions).
-                    for (int k = i; k <= j; k++) {
+                    // Line 9.
+                    for (int k = i; k < j; k++) {
                         final int iCaptured = i;
                         final int jCaptured = j;
                         final int kCaptured = k;
 
                         // Lines 10 and 11 (with modification for 2NF).
                         getRules().forEach((rule) -> {
-                            if (rule.size() == 2 && table.get(iCaptured).get(jCaptured).contains(rule.get(1))) {
-                                /*
-                                 * Handle unit productions (I think this is not possible in 2NF but the professor
-                                 * had one in his previous example) I want to stay on the safe side
-                                 */
-                                table.get(iCaptured).get(jCaptured).add(rule.get(0));
-                            } else if (rule.size() == 3 && kCaptured < jCaptured) {
+                            if (rule.size() == 3) {
                                 // 2 Variables case
                                 boolean tableHasFirstPart = table.get(iCaptured).get(kCaptured)
                                         .contains(rule.get(1));
@@ -169,7 +163,11 @@ public class Cyk {
         }
 
         private void checkIfValid() {
-            boolean isValid = getRules().stream().allMatch((rule) -> rule.size() <= 3);
+            boolean isValid = getRules().stream().allMatch((rule) ->
+                            (rule.size() == 1 && rule.get(0).equals(getStartVariable())) ||
+                            (rule.size() == 2 && !getVariables().contains(rule.get(1))) ||
+                            rule.size() == 3
+                    );
 
             if (!isValid)
                 throw new IllegalArgumentException("Found less than 2 elements on the RHS of a rule (Expected 2 or less)");
@@ -189,10 +187,7 @@ public class Cyk {
 
         private void checkIfValid() {
             boolean isValid = getRules().stream()
-                    .allMatch((rule) -> (rule.size() == 1 && rule.get(0).equals(getStartVariable()) ||
-                            (rule.size() == 2 && !getVariables().contains(rule.get(1))) ||
-                            (rule.size() == 3 && getVariables().containsAll(rule))
-                    ));
+                    .allMatch((rule) -> (rule.size() == 3 && getVariables().containsAll(rule)));
 
             if (!isValid)
                 throw new IllegalArgumentException("Grammar is not in Chomsky Normal Form");
