@@ -135,7 +135,7 @@ public class Cyk {
                                         input.substring(iCaptured, jCaptured + 1).startsWith(rule.get(1));
                                 boolean tableHasRest =  iCaptured + rule.get(1).length() < input.length() &&
                                         table.get(iCaptured + rule.get(1).length()).get(jCaptured)
-                                        .contains(rule.get(2));
+                                                .contains(rule.get(2));
 
                                 boolean substringEndsWithSecondTerminal =
                                         input.substring(iCaptured, jCaptured + 1).endsWith(rule.get(2));
