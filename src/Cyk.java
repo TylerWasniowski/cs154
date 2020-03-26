@@ -1,6 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -213,6 +211,24 @@ public class Cyk {
         }
 
         String fileName = args[0];
+
+        try (BufferedReader in = new BufferedReader(new FileReader(fileName))) {
+            boolean linesAreValid = in.lines().allMatch((line) -> {
+                if (!line.isEmpty()) {
+                    return line.matches("([01])+:(([01])+|a|b),(([01])+|a|b|e)");
+                }
+
+                return true;
+            });
+
+            if (!linesAreValid) {
+                System.out.println("NO");
+                return;
+            }
+        } catch (IOException e) {
+            System.out.println("IO error");
+            e.printStackTrace();
+        }
 
         if ((new SecondNormalFormGrammar(fileName)).processString(input))
             System.out.println("YES");
