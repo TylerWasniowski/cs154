@@ -86,12 +86,6 @@ public class Cyk {
             checkIfValid();
         }
 
-        public ChomskyNormalFormGrammar getChomskyNormalForm() {
-            // TODO: Transform to CNF
-            return new ChomskyNormalFormGrammar(getRules());
-        }
-
-
         // Modified from: http://www.cs.sjsu.edu/faculty/pollett/154.1.20s/Lec20200323.html#(6)
         @Override
         public boolean processString(String input) {
